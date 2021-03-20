@@ -34,16 +34,19 @@ val `testcontainers-version`: String by project
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    // rest configuration
+    // core logic dependencies
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+
+    // rest dependencies
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$`kotlin-jackson-version`")
 
-    // database configuration
+    // database dependencies
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql")
 
-    // logging framework configuration — slf4j with log4j2
+    // logging framework dependencies — slf4j with log4j2
     implementation("org.springframework.boot:spring-boot-starter-log4j2")
     implementation("io.github.microutils:kotlin-logging-jvm:$`kotlin-logs-version`")
 
@@ -52,15 +55,15 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
-    // testing framework configuration — junit5 with spring mockk
+    // testing framework dependencies — junit5 with spring mockk
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.ninja-squad:springmockk:$`spring-mockk-version`")
 
-    // testcontainers configuration
+    // testcontainers dependencies
     // use testcontainers to run specific environment in docker container right from tests
-    testImplementation("org.testcontainers:junit-jupiter:$`testcontainers-version`")
     testImplementation("org.testcontainers:testcontainers:$`testcontainers-version`")
+    testImplementation("org.testcontainers:junit-jupiter:$`testcontainers-version`")
     testImplementation("org.testcontainers:postgresql:$`testcontainers-version`")
 }
 
