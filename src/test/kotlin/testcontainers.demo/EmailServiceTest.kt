@@ -22,7 +22,7 @@ import testcontainers.demo.services.EmailService
 import java.time.Duration
 
 @Testcontainers
-@SpringBootTest
+@SpringBootTest(properties = ["spring.datasource.url=jdbc:tc:postgresql:13.2:///?TC_DAEMON=true&TC_INITSCRIPT=file:src/main/resources/data.sql"])
 class EmailServiceTest @Autowired constructor(
     private val mailer: EmailService,
     private val repository: UsersRepository,
@@ -37,6 +37,9 @@ class EmailServiceTest @Autowired constructor(
         private val CHECK_WEB_DURATION = Duration.ofSeconds(20)
         private val WAIT_STARTUP_TIMEOUT = Duration.ofSeconds(5)
 
+        /**
+         * Workaround for [testcontainers-java/issues/318](https://github.com/testcontainers/testcontainers-java/issues/318)
+         */
         class KGenericContainer(image: DockerImageName): GenericContainer<KGenericContainer>(image)
 
         /**

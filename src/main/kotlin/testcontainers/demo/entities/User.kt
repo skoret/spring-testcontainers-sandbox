@@ -5,6 +5,7 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.Table
 
 /**
  * According to [Spring Boot tutorial for Kotlin](https://spring.io/guides/tutorials/spring-boot-kotlin/#_persistence_with_jpa):
@@ -14,6 +15,7 @@ import javax.persistence.Id
  * should use classes like `data class User(val login: String, …)` when using Spring Data MongoDB, Spring Data JDBC, etc.
  */
 @Entity
+@Table(name = "users")
 class User(
     @Column(nullable = false)
     var name: String,
