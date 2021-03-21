@@ -10,7 +10,9 @@
             <AppenderRef ref="STDOUT"/>
         </Root>
         <Logger name="_org.springframework" level="info"/>
+        <Logger name="com.github.dockerjava" level="info"/>
         <Logger name="org.springframework" level="info"/>
+        <Logger name="org.testcontainers" level="info"/>
         <Logger name="com.zaxxer.hikari" level="info"/>
         <Logger name="org.hibernate" level="info"/>
     </Loggers>
