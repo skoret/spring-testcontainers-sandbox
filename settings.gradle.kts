@@ -13,4 +13,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "testcontainers-demo"
+rootProject.name = "spring-testcontainers-sandbox"

@@ -37,10 +37,6 @@ dependencies {
     // core logic dependencies
     implementation("org.springframework.boot:spring-boot-starter-mail")
 
-    // rest dependencies
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$`kotlin-jackson-version`")
-
     // database dependencies
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("com.h2database:h2")
@@ -58,13 +54,16 @@ dependencies {
     // testing framework dependencies — junit5 with spring mockk
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("com.ninja-squad:springmockk:$`spring-mockk-version`")
 
     // testcontainers dependencies
     // use testcontainers to run specific environment in docker container right from tests
     testImplementation("org.testcontainers:testcontainers:$`testcontainers-version`")
     testImplementation("org.testcontainers:junit-jupiter:$`testcontainers-version`")
     testImplementation("org.testcontainers:postgresql:$`testcontainers-version`")
+
+    // rest dependencies
+    testImplementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:$`kotlin-jackson-version`")
 }
 
 tasks.test {

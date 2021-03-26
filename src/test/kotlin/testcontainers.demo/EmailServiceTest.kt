@@ -67,14 +67,14 @@ class EmailServiceTest @Autowired constructor(
             log.warn { "setup host and port for smtp server" }
 
             val host = mailhog.host
-            val smtp = mailhog.getMappedPort(PORT_SMTP)
-            val http = mailhog.getMappedPort(PORT_HTTP)
+            val port_smtp = mailhog.getMappedPort(PORT_SMTP)
+            val port_http = mailhog.getMappedPort(PORT_HTTP)
             registry.add("spring.mail.host") { host }
-            registry.add("spring.mail.port") { smtp }
-            SMTP_URL = "http://$host:$http"
+            registry.add("spring.mail.port") { port_smtp }
+            SMTP_URL = "http://$host:$port_http"
 
             log.warn { "\tspring.mail.host = $host" }
-            log.warn { "\tspring.mail.port = $smtp" }
+            log.warn { "\tspring.mail.port = $port_smtp" }
             log.warn { "\tmailhog ui: $SMTP_URL" }
             log.warn { "------------------------" }
         }
@@ -95,10 +95,10 @@ class EmailServiceTest @Autowired constructor(
         log.warn { "run test | mailhog ui: $SMTP_URL" }
         val (sender, recipient) = users()
         val (subject, message) = "Test Subject" to "Hello, Testcontainers!"
+
         mailer.send(sender.id, recipient.id, subject, message)
 
         val (count, mails) = mails("from", sender.email)
-
         assertThat(count).isGreaterThan(0)
         assertThat(mails)
             .anySatisfy { (content, from, to) ->
@@ -111,11 +111,10 @@ class EmailServiceTest @Autowired constructor(
             }
     }
 
-    private fun users(): Pair<User, User> {
+    private fun users(): List<User> {
         if (repository.count() < 2)
             fail("Not enough users entries in db, check your setup")
-        val users = repository.findAll().toList()
-        return users[0] to users[1]
+        return repository.findAll().toList()
     }
 
     private fun mails(kind: String, query: String): Mails {
