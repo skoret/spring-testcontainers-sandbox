@@ -21,8 +21,6 @@ configurations {
         // logging framework configuration — slf4j with log4j2
         exclude(group = "org.slf4j", module = "slf4j-log4j12")
         exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
-        // testing framework configuration — junit5 with spring mockk
-        exclude(group = "org.mockito")
     }
 }
 
@@ -51,7 +49,7 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
-    // testing framework dependencies — junit5 with spring mockk
+    // testing framework dependencies
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
@@ -66,12 +64,11 @@ dependencies {
     testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:$`kotlin-jackson-version`")
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "15"
+tasks {
+    test {
+        useJUnitPlatform()
+    }
+    withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "15"
     }
 }

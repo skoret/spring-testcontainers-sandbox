@@ -28,11 +28,12 @@ class EmailServiceTest @Autowired constructor(
     private val repository: UsersRepository,
 ) {
     companion object {
-        val log = logger {}
+        private val log = logger {}
+        private val rest = RestTemplate()
 
         private const val PORT_SMTP = 1025
         private const val PORT_HTTP = 8025
-        private lateinit var SMTP_URL: String
+        private lateinit var MAILHOG_UI_URL: String
         private const val CHECK_WEB_UI = false
         private val CHECK_WEB_DURATION = Duration.ofSeconds(20)
         private val WAIT_STARTUP_TIMEOUT = Duration.ofSeconds(5)
@@ -40,7 +41,7 @@ class EmailServiceTest @Autowired constructor(
         /**
          * Workaround for [testcontainers-java/issues/318](https://github.com/testcontainers/testcontainers-java/issues/318)
          */
-        class KGenericContainer(image: DockerImageName): GenericContainer<KGenericContainer>(image)
+        class KGenericContainer(image: DockerImageName) : GenericContainer<KGenericContainer>(image)
 
         /**
          * Pull image if needed, configure and run container with mailhog smtp server before application start
@@ -71,11 +72,11 @@ class EmailServiceTest @Autowired constructor(
             val port_http = mailhog.getMappedPort(PORT_HTTP)
             registry.add("spring.mail.host") { host }
             registry.add("spring.mail.port") { port_smtp }
-            SMTP_URL = "http://$host:$port_http"
+            MAILHOG_UI_URL = "http://$host:$port_http"
 
             log.warn { "\tspring.mail.host = $host" }
             log.warn { "\tspring.mail.port = $port_smtp" }
-            log.warn { "\tmailhog ui: $SMTP_URL" }
+            log.warn { "\tmailhog ui: $MAILHOG_UI_URL" }
             log.warn { "------------------------" }
         }
     }
@@ -84,7 +85,7 @@ class EmailServiceTest @Autowired constructor(
     fun cleanup() {
         if (CHECK_WEB_UI) {
             log.warn { "Go to web ui and see mails, you have only $CHECK_WEB_DURATION" }
-            log.warn { "\tmailhog ui: $SMTP_URL" }
+            log.warn { "\tmailhog ui: $MAILHOG_UI_URL" }
             Thread.sleep(CHECK_WEB_DURATION.toMillis())
         }
     }
@@ -92,13 +93,13 @@ class EmailServiceTest @Autowired constructor(
     @Test
     fun send() {
         log.warn { "------------------------" }
-        log.warn { "run test | mailhog ui: $SMTP_URL" }
+        log.warn { "run test | mailhog ui: $MAILHOG_UI_URL" }
         val (sender, recipient) = users()
         val (subject, message) = "Test Subject" to "Hello, Testcontainers!"
 
         mailer.send(sender.id, recipient.id, subject, message)
 
-        val (count, mails) = mails("from", sender.email)
+        val (count, mails) = mails(sender.email)
         assertThat(count).isGreaterThan(0)
         assertThat(mails)
             .anySatisfy { (content, from, to) ->
@@ -117,10 +118,9 @@ class EmailServiceTest @Autowired constructor(
         return repository.findAll().toList()
     }
 
-    private fun mails(kind: String, query: String): Mails {
+    private fun mails(query: String, kind: String = "from"): Mails {
         log.warn { "retrieve mails from mailhog container" }
-        val template = RestTemplate()
-        return template.getForObject("$SMTP_URL/api/v2/search?kind=$kind&query=$query")
+        return rest.getForObject("$MAILHOG_UI_URL/api/v2/search?kind=$kind&query=$query")
     }
 
     private data class Mails(

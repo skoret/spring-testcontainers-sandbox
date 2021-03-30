@@ -38,6 +38,7 @@ class EmailService(
         log.warn { "\t   from: $from" }
         log.warn { "\t     to: $to" }
         log.warn { "\tsubject: '$subject'" }
+        log.warn { "\t   text: '$text'" }
         log.warn { "------------------------" }
     }
 }
