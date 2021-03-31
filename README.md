@@ -2,8 +2,9 @@
 Sample project with testcontainers example using kotlin and spring-boot
 
 ## Setup
-- Gradle `6.8.3`
 - Kotlin `1.4.32`
+- Gradle `6.8.3`
+- Mailhog `1.0.1`
 - Spring Boot `2.4.4`
 - Testcontainers `1.15.2`
 - Intellij IDEA `2020.3.2`
@@ -24,3 +25,4 @@ Or open project from Intellij IDEA and run tests from it
   - [github.com/testcontainers](https://github.com/testcontainers)
   - [Testcontainers — integration testing with Docker (RU)](https://youtu.be/PEVVvZOt7bY)
   - [Testcontainers: One year later (RU)](https://youtu.be/xgZ8KyUDjvQ)
+- [Mailhog](https://github.com/mailhog/MailHog)
