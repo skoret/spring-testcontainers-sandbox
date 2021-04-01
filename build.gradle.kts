@@ -26,7 +26,6 @@ configurations {
 
 val `kotlin-logs-version`: String by project
 val `kotlin-jackson-version`: String by project
-val `spring-mockk-version`: String by project
 val `testcontainers-version`: String by project
 
 dependencies {
