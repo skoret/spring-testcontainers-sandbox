@@ -19,7 +19,8 @@ Or `./gradlew test` or `gradlew.bat test` on Windows
 Or open project from Intellij IDEA and run tests from it
 
 ## Materials
-- [Presentation for SE students (RU)](https://docs.google.com/presentation/d/1HQY7NW8b61o_qwVQoRevSNk-IUcIP2dtnhnbP1RtVv8)
+- [Presentation for SE students (RU)](./presentation_ru.pdf)
+  - [Google Slides](https://docs.google.com/presentation/d/1HQY7NW8b61o_qwVQoRevSNk-IUcIP2dtnhnbP1RtVv8)
 - [Docker Documentation](https://docs.docker.com/)
 - [Testcontainers](https://www.testcontainers.org/)
   - [github.com/testcontainers](https://github.com/testcontainers)
